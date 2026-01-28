@@ -1,0 +1,19 @@
+auth:
+  depends_on:
+    - database
+    - cache
+
+api:
+  depends_on:
+    - auth
+    - database
+
+gateway:
+  depends_on:
+    - api
+
+database:
+  depends_on: []
+
+cache:
+  depends_on: []
