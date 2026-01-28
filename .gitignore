@@ -1,16 +1,25 @@
-# Virtual environment
+# Virtual environments
 .venv/
+venv/
 
-# Python cache
+# Python cache / bytecode
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyd
 
-# Pytest cache
+# Test / tooling caches
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# IDE settings (optional but clean)
+# IDE/editor
 .vscode/
+.idea/
+
+# Env files
+.env
+.env.*
