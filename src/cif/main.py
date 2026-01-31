@@ -1,6 +1,8 @@
+from typing import List
+
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
+
 
 app = FastAPI(title="Change Impact Forecaster")
 
@@ -23,10 +25,10 @@ def assess_change(change: ChangeInput):
         "uncertainty": "high",
         "blast_radius": {
             "direct": change.affected_components,
-            "indirect": []
+            "indirect": [],
         },
         "explanation": [
             "This is a placeholder assessment.",
-            "Risk logic has not been implemented yet."
-        ]
+            "Risk logic has not been implemented yet.",
+        ],
     }

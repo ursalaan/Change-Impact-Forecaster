@@ -1,3 +1,6 @@
+# Service dependency graph used for blast-radius analysis.
+# This is intentionally simplified and represents logical dependencies, not infrastructure-level wiring.
+
 auth:
   depends_on:
     - database

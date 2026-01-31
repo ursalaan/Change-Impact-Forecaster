@@ -39,13 +39,18 @@ class ChangeInput(BaseModel):
     environment: Environment
 
     window_start: Optional[datetime] = Field(
-        default=None, description="Planned start time (ISO 8601)."
+        default=None,
+        description="Planned start time (ISO 8601).",
     )
     window_end: Optional[datetime] = Field(
-        default=None, description="Planned end time (ISO 8601)."
+        default=None,
+        description="Planned end time (ISO 8601).",
     )
 
-    services_touched: List[str] = Field(default_factory=list, examples=[["auth", "api"]])
+    services_touched: List[str] = Field(
+        default_factory=list,
+        examples=[["auth", "api"]],
+    )
 
     deployment_method: Optional[str] = Field(
         default=None,

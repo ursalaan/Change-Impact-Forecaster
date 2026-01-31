@@ -19,9 +19,11 @@ def test_assess_returns_expected_shape():
     }
 
     response = client.post("/assess", json=payload)
+
     if response.status_code != 200:
         print("STATUS:", response.status_code)
         print("BODY:", response.json())
+
     assert response.status_code == 200
 
     data = response.json()
@@ -56,4 +58,5 @@ def test_unknown_service_returns_422():
     }
 
     response = client.post("/assess", json=payload)
+
     assert response.status_code == 422
