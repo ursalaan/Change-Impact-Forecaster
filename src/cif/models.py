@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class Environment(str, Enum):
@@ -35,35 +35,34 @@ class MonitoringPlan(str, Enum):
 class ChangeInput(BaseModel):
     change_id: str = Field(..., examples=["CHG-1024"])
     title: str = Field(..., examples=["Update auth service timeout settings"])
+
     change_type: ChangeType
     environment: Environment
 
-    window_start: Optional[datetime] = Field(
-        default=None,
-        description="Planned start time (ISO 8601).",
-    )
-    window_end: Optional[datetime] = Field(
-        default=None,
-        description="Planned end time (ISO 8601).",
-    )
+    window_start: Optional[datetime] = Field(default=None)
+    window_end: Optional[datetime] = Field(default=None)
 
-    services_touched: List[str] = Field(
-        default_factory=list,
-        examples=[["auth", "api"]],
-    )
+    services_touched: List[str] = Field(default_factory=list)
 
-    deployment_method: Optional[str] = Field(
-        default=None,
-        examples=["manual", "pipeline", "terraform", "ansible"],
-    )
+    deployment_method: Optional[str] = None
 
     rollback_quality: RollbackQuality = RollbackQuality.partial
     monitoring_plan: MonitoringPlan = MonitoringPlan.basic
 
-    notes: Optional[str] = Field(
-        default=None,
-        description="Free text. Useful for extra context, but not required.",
-    )
+    notes: Optional[str] = None
+
+    @model_validator(mode="after")
+    def validate_change(self):
+        if not self.services_touched:
+            raise ValueError("services_touched must contain at least one service")
+
+        if self.window_start and self.window_end and self.window_end <= self.window_start:
+            raise ValueError("window_end must be after window_start")
+
+        if len(self.services_touched) > 10:
+            raise ValueError("Too many services in a single change; consider splitting it")
+
+        return self
 
 
 class Factor(BaseModel):
